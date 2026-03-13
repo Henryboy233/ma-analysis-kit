@@ -230,6 +230,14 @@ class GeminiAnalyzer:
         Yields:
             每次生成的文本片段
         """
+        # 检查API密钥
+        if not self.api_key:
+            error_msg = "❌ Gemini API密钥未配置"
+            if placeholder:
+                placeholder.error(error_msg + "\n\n请在侧边栏设置GEMINI_API_KEY环境变量")
+            yield error_msg
+            return
+        
         # 构建提示词
         prompt = self._build_dd_prompt(company_name, industry, file_contents, financial_data)
         
@@ -286,7 +294,7 @@ class GeminiAnalyzer:
                     placeholder.markdown(full_response)
                     
             else:
-                error_msg = f"API调用失败: HTTP {response.status_code}"
+                error_msg = f"❌ API调用失败: HTTP {response.status_code}"
                 if placeholder:
                     placeholder.error(error_msg)
                     

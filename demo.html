@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能投研工作台 - 领导演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h2 .icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-item .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-item .label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .feature .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+        
+        .feature ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .feature ul li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        /* Workflow */
+        .workflow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .workflow-step {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .workflow-step::after {
+            content: "→";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+        
+        .workflow-step:last-child::after {
+            display: none;
+        }
+        
+        .workflow-step .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 15px;
+            color: white;
+        }
+        
+        .workflow-step .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .workflow-step .step-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Architecture */
+        .architecture {
+            background: #1a1a2e;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+        
+        .arch-layer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .arch-component {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .arch-component .name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .arch-component .tech {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .arch-label {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        /* Demo Section */
+        .demo-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px;
+            border-radius: 16px;
+            margin: 30px 0;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .demo-card .header {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .demo-card .content {
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .demo-card .mock-chart {
+            height: 100px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            margin: 10px 0;
+            opacity: 0.3;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            opacity: 0.9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .workflow {
+                flex-direction: column;
+            }
+            
+            .workflow-step::after {
+                content: "↓";
+                right: 50%;
+                bottom: -30px;
+                top: auto;
+                transform: translateX(50%);
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+            
+            .header {
+                color: #333;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                color: #667eea;
+                text-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏢 智能投研工作台</h1>
+            <p class="subtitle">AI驱动的收并购(M&A)一站式分析平台</p>
+            <div>
+                <span class="badge">🤖 AI增强</span>
+                <span class="badge">📊 实时数据</span>
+                <span class="badge">🔒 私有化部署</span>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="card">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number">3</div>
+                    <div class="label">核心场景</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">5+</div>
+                    <div class="label">数据源</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">4</div>
+                    <div class="label">文档格式</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">10s</div>
+                    <div class="label">分析耗时</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Core Features -->
+        <div class="card">
+            <h2><span class="icon">🎯</span> 三大核心场景</h2>
+            <div class="features">
+                <div class="feature">
+                    <span class="tag">场景一</span>
+                    <h3>📈 单一公司深度财务分析</h3>
+                    <p>快速获取上市公司财务数据，自动生成健康度评分和风险评估</p>
+                    <ul>
+                        <li>多数据源支持（AKShare/Tushare）</li>
+                        <li>财务健康度评分（0-100）</li>
+                        <li>可视化趋势图表</li>
+                        <li>风险自动排雷</li>
+                    </ul>
+                </div>
+                <div class="feature">
+                    <span class="tag">场景二</span>
+                    <h3>📊 投资组合监控</h3>
+                    <p>多资产组合实时监控，风险评估与收益分析</p>
+                    <ul>
+                        <li>持仓分布分析</li>
+                        <li>行业配置监控</li>
+                        <li>VaR风险价值计算</li>
+                        <li>自动报告生成</li>
+                    </ul>
+                </div>
+                <div class="feature">
+                    <span class="tag">场景三</span>
+                    <h3>🔍 智能商业尽调(CDD)</h3>
+                    <p>AI驱动的商业尽调，自动解析文档并生成深度分析报告</p>
+                    <ul>
+                        <li>多格式文档解析</li>
+                        <li>Gemini AI增强分析</li>
+                        <li>流式实时输出</li>
+                        <li>尽调报告导出</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Workflow -->
+        <div class="card">
+            <h2><span class="icon">🔄</span> 工作流程</h2>
+            <div class="workflow">
+                <div class="workflow-step">
+                    <div class="step-icon">📁</div>
+                    <div class="step-title">资料上传</div>
+                    <div class="step-desc">PDF/Word/Excel/PPT</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">⚡</div>
+                    <div class="step-title">数据解析</div>
+                    <div class="step-desc">自动提取关键信息</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">🤖</div>
+                    <div class="step-title">AI分析</div>
+                    <div class="step-desc">Gemini 3.1 Pro</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-icon">📋</div>
+                    <div class="step-title">报告生成</div>
+                    <div class="step-desc">Markdown/PDF导出</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Architecture -->
+        <div class="card">
+            <h2><span class="icon">🏗️</span> 系统架构</h2>
+            <div class="architecture">
+                <div class="arch-label">前端展示层</div>
+                <div class="arch-layer">
+                    <div class="arch-component">
+                        <div class="name">Streamlit</div>
+                        <div class="tech">交互式Web界面</div>
+                    </div>
+                    <div class="arch-component">
+                        <div class="name">Plotly</div>
+                        <div class="tech">数据可视化</div>
+                    </div>
+                </div>
+                
+                <div class="arch-label">业务逻辑层</div>
+                <div class="arch-layer">
+                    <div class="arch-component">
+                        <div class="name">财务分析引擎</div>
+                        <div class="tech">指标计算/风险评估</div>
+                    </div>
+                    <div class="arch-component">
+                        <div class="name">文档解析器</div>
+                        <div class="tech">多格式提取</div>
+                    </div>
+                    <div class="arch-component">
+                        <div class="name">AI分析器</div>
+                        <div class="tech">Gemini 3.1 Pro</div>
+                    </div>
+                </div>
+                
+                <div class="arch-label">数据接入层</div>
+                <div class="arch-layer">
+                    <div class="arch-component">
+                        <div class="name">AKShare</div>
+                        <div class="tech">免费A股数据</div>
+                    </div>
+                    <div class="arch-component">
+                        <div class="name">Tushare</div>
+                        <div class="tech">专业金融数据</div>
+                    </div>
+                    <div class="arch-component">
+                        <div class="name">天眼查</div>
+                        <div class="tech">企业工商信息</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Demo Preview -->
+        <div class="demo-section">
+            <h2 style="color: #333; margin-bottom: 10px;">🖥️ 界面预览</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="header">📈 财务分析</div>
+                    <div class="content">
+                        <p>股票代码：600519.SH</p>
+                        <p>财务健康度：<strong>85/100</strong></p>
+                        <div class="mock-chart"></div>
+                        <small>营收趋势、盈利能力、估值分析</small>
+                    </div>
+                </div>
+                <div class="demo-card">
+                    <div class="header">📊 组合监控</div>
+                    <div class="content">
+                        <p>持仓数量：<strong>8只</strong></p>
+                        <p>总市值：<strong>1,250万</strong></p>
+                        <div class="mock-chart"></div>
+                        <small>行业分布、风险分析、收益归因</small>
+                    </div>
+                </div>
+                <div class="demo-card">
+                    <div class="header">🔍 商业尽调</div>
+                    <div class="content">
+                        <p>目标公司：Test Tech</p>
+                        <p>AI分析：<strong>已完成</strong></p>
+                        <div class="mock-chart"></div>
+                        <small>商业模式、竞争优势、投资建议</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tech Stack -->
+        <div class="card">
+            <h2><span class="icon">🛠️</span> 技术栈</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>🐍 Python生态</h3>
+                    <ul>
+                        <li>Streamlit - Web应用框架</li>
+                        <li>Pandas - 数据处理</li>
+                        <li>Plotly - 可视化图表</li>
+                        <li>Requests - API调用</li>
+                    </ul>
+                </div>
+                <div class="feature">
+                    <h3>📡 数据源</h3>
+                    <ul>
+                        <li>AKShare - 免费财经数据</li>
+                        <li>Tushare - 专业金融数据</li>
+                        <li>Gemini - AI分析能力</li>
+                        <li>天眼查 - 企业工商信息</li>
+                    </ul>
+                </div>
+                <div class="feature">
+                    <h3>📄 文档解析</h3>
+                    <ul>
+                        <li>PyMuPDF - PDF解析</li>
+                        <li>python-docx - Word解析</li>
+                        <li>openpyxl - Excel解析</li>
+                        <li>python-pptx - PPT解析</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Advantages -->
+        <div class="card">
+            <h2><span class="icon">💡</span> 核心优势</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number">0元</div>
+                    <div class="label">基础数据成本<br><small>AKShare免费数据源</small></div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">10分钟</div>
+                    <div class="label">完成尽调报告<br><small>AI自动生成分析</small></div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">私有化</div>
+                    <div class="label">本地部署<br><small>数据不出内网</small></div>
+                </div>
+                <div class="stat-item">
+                    <div class="number">可扩展</div>
+                    <div class="label">模块化架构<br><small>灵活添加数据源</small></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 深水云科 | 智能投研工作台 v2.0</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">GitHub: https://github.com/Henryboy233/ma-analysis-kit</p>
+        </div>
+    </div>
+</body>
+</html>

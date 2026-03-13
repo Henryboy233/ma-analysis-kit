@@ -29,6 +29,13 @@ from email.header import Header
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config', '.env'))
 
+# 检查启动模式
+if os.getenv("AGENT_MODE") == "1":
+    # Agent平台模式
+    import subprocess
+    subprocess.run([sys.executable, "agent_platform.py"])
+    sys.exit()
+
 # 设置页面配置（必须在第一个st命令前）
 st.set_page_config(
     page_title="智能投研工作台",
@@ -1716,6 +1723,18 @@ def sidebar():
                     else:
                         st.error(f"❌ {message}")
                         st.info("**常见问题：**\n- 检查授权码是否正确（非邮箱密码）\n- 确认SMTP服务器和端口\n- 检查发件邮箱是否开启SMTP服务")
+    
+    # Agent平台入口
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🤖 Agent平台")
+    
+    if st.sidebar.button("🚀 进入Agent管理平台", use_container_width=True, 
+                       help="多Agent智能对话系统，更灵活的交互方式"):
+        st.sidebar.success("正在启动Agent平台...")
+        st.markdown("<meta http-equiv='refresh' content='0;url=/?agent=1'>", 
+                   unsafe_allow_html=True)
+    
+    st.sidebar.caption("💡 推荐：更智能的对话式交互")
     
     # 关于
     st.sidebar.markdown("---")
